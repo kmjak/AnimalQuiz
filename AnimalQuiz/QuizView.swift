@@ -17,6 +17,7 @@ struct QuizView: View {
     @State var isShowingScoreView: Bool = false
     @State var isShowResultSymbol: Bool = false
     @State var isAnswerCorrect: Bool = false
+    @State var currentQuestionIndex: Int = 0
     
     let quizItems = [
         QuizItem(
@@ -49,14 +50,14 @@ struct QuizView: View {
     var body: some View {
         ZStack{
             VStack {
-                Text("問題番号: 1/5")
+                Text("問題番号: \(currentQuestionIndex + 1)/5")
                     .font(.headline)
                     .padding(10)
                     .background(.originalGreen)
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 
-                Text(quizItems[0].question)
+                Text(quizItems[currentQuestionIndex].question)
                     .font(.title)
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -66,12 +67,13 @@ struct QuizView: View {
                     .frame(maxHeight: .infinity)
                 
                 
-                ForEach(quizItems[0].choices, id: \.self){ choice in
+                ForEach(quizItems[currentQuestionIndex].choices, id: \.self){ choice in
                     Button{
-                        isAnswerCorrect = (choice == quizItems[0].correctAnswer)
+                        isAnswerCorrect = (choice == quizItems[currentQuestionIndex].correctAnswer)
                         isShowResultSymbol = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1){
                             self.isShowResultSymbol = false
+                            self.currentQuestionIndex += 1
                         }
                     } label: {
                         Text(choice)
