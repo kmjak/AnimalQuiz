@@ -18,6 +18,7 @@ struct QuizView: View {
     @State var isShowResultSymbol: Bool = false
     @State var isAnswerCorrect: Bool = false
     @State var currentQuestionIndex: Int = 0
+    @State var score = 0
     
     let quizItems = [
         QuizItem(
@@ -69,7 +70,12 @@ struct QuizView: View {
                 
                 ForEach(quizItems[currentQuestionIndex].choices, id: \.self){ choice in
                     Button{
-                        isAnswerCorrect = (choice == quizItems[currentQuestionIndex].correctAnswer)
+                        if choice == quizItems[currentQuestionIndex].correctAnswer {
+                            isAnswerCorrect = true
+                            score += 1
+                        }else{
+                            isAnswerCorrect = false
+                        }
                         isShowResultSymbol = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1){
                             self.isShowResultSymbol = false
@@ -91,7 +97,7 @@ struct QuizView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                     .fullScreenCover(isPresented: $isShowingScoreView) {
-                        ScoreView()
+                        ScoreView(scoreText: "\(quizItems.count)問中\(score)問正解です。")
                     }
                 }
             }

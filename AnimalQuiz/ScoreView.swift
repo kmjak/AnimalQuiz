@@ -8,21 +8,35 @@
 import SwiftUI
 
 struct ScoreView: View {
-    @State var isShowingContetntView: Bool = false
-    
+    let scoreText: String
+
     var body: some View {
         VStack {
-            Text("5問中3問正解!")
-            Button("トップへ") {
-                isShowingContetntView = true
-            }
-            .fullScreenCover(isPresented: $isShowingContetntView) {
-                StartView()
+            Spacer()
+
+            Text(scoreText)
+                .font(.system(size: 40).bold())
+                .foregroundStyle(.originalYellow)
+                .stroke(color: .originalGreen, width: 5)
+
+            Spacer()
+
+            Button {
+                let WindowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                    WindowScene?.windows.first?.rootViewController?.dismiss(animated: true)
+            } label: {
+                Image(.topButton)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
             }
         }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .backgroundImage()
     }
 }
 
 #Preview {
-    ScoreView()
+    ScoreView(scoreText: "")
 }
