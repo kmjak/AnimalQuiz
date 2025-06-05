@@ -73,6 +73,12 @@ struct QuizView: View {
                         isShowResultSymbol = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1){
                             self.isShowResultSymbol = false
+                            
+                            if self.currentQuestionIndex + 1 == self.quizItems.count {
+                                self.isShowingScoreView = true
+                                return
+                            }
+                            
                             self.currentQuestionIndex += 1
                         }
                     } label: {
